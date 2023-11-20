@@ -19,7 +19,7 @@ If using a private AKS Cluster as the host cluster, make sure the following addr
 * https://management.azure.com: Validate Azure RBAC permissions
 
 In addition, make sure the following images can be pulled within the cluster (besides the [vCluster.Pro images](https://github.com/loft-sh/loft/releases/latest/download/loft-images.txt)):
-* ghcr.io/loft-sh/guard:v0.16.3-loft.0
+* ghcr.io/loft-sh/guard:v0.16.3-loft.2
 
 ### 1. Create First Application (confidential-app)
 
@@ -121,7 +121,7 @@ TENANT_ID=<tenant-id>
 # Kubernetes fleet id in the form of /subscriptions/...
 RESOURCE_GROUP_ID=<resource-group-id>
 
-# Create the manifests
+# Create the manifests via client-secret
 guard get installer \
    --auth-providers=azure \
    --azure.auth-mode=client-credential \
@@ -137,11 +137,13 @@ guard get installer \
    --azure.allow-nonres-discovery-path-access=true > installer.yaml
 ```
 
+> Use `--azure.client-assertion=$JWT_TOKEN` instead of `--azure.client-secret` to use a client certificate instead of a client secret
+
 Next we need to modify the generated yaml to avoid problems when deploying guard:
 * Remove `Service.spec.clusterIP`
 * Remove `Deployment.spec.template.spec.nodeSelector`
 * Remove `Deployment.spec.template.spec.priorityClassName`
-* Replace `Deployment.spec.template.spec.containers.image` with `ghcr.io/loft-sh/guard:v0.16.3-loft.0`
+* Replace `Deployment.spec.template.spec.containers.image` with `ghcr.io/loft-sh/guard:v0.16.3-loft.2`
 
 Now we apply the yaml to the host Kubernetes cluster:
 ```
