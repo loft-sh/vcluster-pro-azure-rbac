@@ -137,7 +137,7 @@ guard get installer \
    --azure.allow-nonres-discovery-path-access=true > installer.yaml
 ```
 
-> Use `--azure.client-assertion=$JWT_TOKEN` instead of `--azure.client-secret` to use a client certificate instead of a client secret
+> Use `--azure.client-assertion=$JWT_TOKEN` instead of `--azure.client-secret` to use a client certificate instead of a client secret. See [Azure Certificate Credentials](https://learn.microsoft.com/en-us/entra/identity-platform/certificate-credentials#updating-the-application-manifest) for more infomation.
 
 Next we need to modify the generated yaml to avoid problems when deploying guard:
 * Remove `Service.spec.clusterIP`
